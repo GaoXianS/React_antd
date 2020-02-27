@@ -10,28 +10,42 @@ class Activity extends Component {
     super(props);
     this.state = { 
       tableDate: [],
-      loading: true
+      loading: false,
+      current: 1,
+      pageSize: 10,
+      total: null
     }
   };
   componentDidMount () {
     this.upDatalist();
   };
+  pageChange (current,pageSize) {
+    this.setState({
+      current: current,
+      pageSize: pageSize
+    }, () => {
+      this.upDatalist()
+    })
+  };
   upDatalist () {
+    let { current, pageSize } = this.state;
+    this.setState({
+      loading: true
+    });
     let obj = {
       "contractIds": [],
       "contractNo": "",
       "contractStatus": "",
       "customerName": "",
-      "page": 1,
+      "page": current,
       "projectName": "",
       "projectType": "",
       "roomName": "",
-      "rows": 10,
+      "rows": pageSize,
       "time": "",
       "userName": ""
     };
     var objJson = JSON.stringify(obj);
-    console.log(objJson)
     axios.post(`https://testepms.epark.com/api/console/contract/list`,objJson,{
       headers: {
         'x-auth-token': 'd26afabe-02ed-426d-9976-1baedd678b96',
@@ -41,8 +55,11 @@ class Activity extends Component {
       if (res.data.success) {
         this.setState({
           tableDate: res.data.data.list,
-          loading: false
-        })
+          loading: false,
+          current: res.data.data.pageNum,
+          pageSize: res.data.data.pageSize,
+          total: res.data.data.total
+        });
       } else {
         this.setState({
           loading: false
@@ -54,7 +71,6 @@ class Activity extends Component {
     console.log(params.id)
   };
   AddActivityShowModal (e) {
-    console.log(1)
     this.refs.AddActivityShowModal.showModal(e); // 调用组件中showModal方法
     // this.refs.AddActivityShowModal.setState({ 更改组件中state的值
     //   visible: true
@@ -80,8 +96,6 @@ class Activity extends Component {
             </Menu>
           );
           return (
-            // <div onClick={()=> { this.remove(params)}}>删除</div>
-            // <div onClick={()=> { this.remove(params)}}>删除</div>
             <Dropdowns menu={menu}></Dropdowns>
           )
         }
@@ -89,8 +103,14 @@ class Activity extends Component {
     ]
     return ( 
       <Fragment>
-        <TableList loading={this.state.loading} columns={tableName} data={this.state.tableDate}></TableList>
-        <AddActivity ref='AddActivityShowModal'>添加</AddActivity>
+        <TableList 
+          loading={this.state.loading} 
+          columns={tableName} 
+          data={this.state.tableDate}
+          pagination={{current: this.state.current, total: this.state.total, onChange: this.pageChange.bind(this)}}>
+        </TableList>
+
+        <AddActivity  ref='AddActivityShowModal' current={this.state.current} onChange={this.upDatalist.bind(this)} tableDate={this.state.tableDate}></AddActivity>
       </Fragment>
     );
   }

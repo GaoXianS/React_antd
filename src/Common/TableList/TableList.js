@@ -7,7 +7,13 @@ class TableList extends Component {
   }
   render() { 
     return ( 
-      <Table rowKey={(row) => row.id} loading={this.props.loading} columns={this.props.columns} dataSource={this.props.data} />
+      <Table 
+        rowKey={(row) => row.id} 
+        loading={this.props.loading} 
+        columns={this.props.columns} 
+        dataSource={this.props.data} 
+        pagination={this.props.pagination}  
+      />
     );
   }
 }

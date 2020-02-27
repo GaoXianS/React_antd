@@ -8,14 +8,13 @@ class AddActivity extends Component {
     this.setState({
       visible: true,
     });
-    console.log(e)
   };
 
   handleOk = e => {
-    console.log(e);
     this.setState({
       visible: false,
     });
+    this.props.onChange();
   };
 
   handleCancel = e => {

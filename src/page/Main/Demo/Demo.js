@@ -36,10 +36,10 @@ class Demo extends Component {
       }
     ]
     const demoDate = [
-      { name: 'Demo', age: 20,sex: '女', work:'测试', key:'0'},
-      { name: 'Demo', age: 20,sex: '女', work:'测试', key:'1'},
-      { name: 'Demo', age: 20,sex: '女', work:'测试', key:'2'},
-      { name: 'Demo', age: 20,sex: '女', work:'测试', key:'3'},
+      { name: 'Demo', age: 20,sex: '女', work:'测试', id:'0'},
+      { name: 'Demo', age: 20,sex: '女', work:'测试', id:'1'},
+      { name: 'Demo', age: 20,sex: '女', work:'测试', id:'2'},
+      { name: 'Demo', age: 20,sex: '女', work:'测试', id:'3'},
     ]
     return (
       <TableList columns={demoName} data={demoDate}></TableList>
